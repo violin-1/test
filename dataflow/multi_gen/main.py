@@ -81,8 +81,8 @@ class Multi_modal_polarization:
         if root is not None:
             self.dir = root
         if self.dir is not None and dtype is not None:
-            self.dolpfiletxt = os.path.join(self.dir,'DOLP_'+dtype+'.txt')
-            self.s0filetxt = os.path.join(self.dir,'S0_'+dtype+'.txt')
+            self.dolpfiletxt = os.path.join(self.dir,'gen_DOLP_'+dtype+'.txt')
+            self.s0filetxt = os.path.join(self.dir,'gen_S0_'+dtype+'.txt')
             self.dtype = dtype
             
             dolpmat = np.genfromtxt(self.dolpfiletxt,delimiter=',', dtype=np.str)
