@@ -1,0 +1,12 @@
+common:
+    arch: CDCN
+    workers: 1
+    batchsize: 32
+    epochs: 200
+    lr: 0.0001
+    step_size: 20
+    gamma: 0.5
+    num_workers: 0
+    draw_logfile: multi_modal_Polarization_1638353198_log.txt
+    checkpoints_num: 10
+    trainratio: '19'
