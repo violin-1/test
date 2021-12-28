@@ -35,7 +35,7 @@ def args_set(datactr,args):
     datactr.train_init = train_init
     datactr.end_func = end_func
     datactr.res_func = res_compare
-    datactr.optimizer = optim.Adam(datactr.modelctr.models[datactr.curmodel].parameters(), lr=datactr.config.lr, weight_decay=0.00005)
+    datactr.optimizer = optim.Adam(datactr.modelctr.models[datactr.curmodel].to(datactr.device).parameters(), lr=datactr.config.lr, weight_decay=0.00005)
     datactr.scheduler = optim.lr_scheduler.StepLR(datactr.optimizer, step_size=datactr.config.step_size, gamma=datactr.config.gamma)
     
     datactr.datasets[0].out=args['out']

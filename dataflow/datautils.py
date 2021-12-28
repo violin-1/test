@@ -43,14 +43,6 @@ class Trainer:
   def set(self,datactr=None):
       if datactr is not None:
         self.device = torch.device('cuda:' + str(datactr.config.gpus[0]) if torch.cuda.is_available() else "cpu")
-      if self.device != 'cpu':
-          cudnn.benchmark = True
-          # torch.cuda.manual_seed_all(datactr.config.random_seed)
-          datactr.config.gpus = [int(i) for i in datactr.config.gpus.split(',')]
-          datactr.modelctr.models[datactr.curmodel].to(self.device)
-          self.gpus = datactr.config.gpus
-          if len(datactr.config.gpus) > 1:
-              datactr.modelctr.models[datactr.curmodel] = torch.nn.DataParallel(datactr.modelctr.models[datactr.curmodel],device_ids=datactr.config.gpus)
       
       self.lr = datactr.config.lr
       
@@ -62,7 +54,7 @@ class Trainer:
               self.optimizer.load_state_dict(datactr.modelctr.checkpoints[datactr.curmodel]['optimizer'])
           if 'scheduler' in datactr.modelctr.checkpoints[datactr.curmodel].keys():
               self.scheduler.load_state_dict(datactr.modelctr.checkpoints[datactr.curmodel]['scheduler'])
-          self.best_acc = datactr.modelctr.checkpoints[datactr.curmodel]['best_acc']
+          self.best_res = datactr.modelctr.checkpoints[datactr.curmodel]['best_res']
           self.strart_epoch = datactr.modelctr.checkpoints[datactr.curmodel]['epoch']
           
       elif os.path.exists(os.path.join(self.savedir,'best.pth')):
@@ -73,11 +65,22 @@ class Trainer:
               self.optimizer.load_state_dict(checkpoint['optimizer'])
           if 'scheduler' in checkpoint.keys():
               self.scheduler.load_state_dict(checkpoint['scheduler'])
-          self.best_acc = checkpoint['best_acc']
+          self.best_res = checkpoint['best_res']
           self.strart_epoch = checkpoint['epoch']
       else:
           self.best_acc = 0
           self.strart_epoch = 0
+      
+      if self.device != 'cpu':
+          cudnn.benchmark = True
+          # torch.cuda.manual_seed_all(datactr.config.random_seed)
+          datactr.config.gpus = [int(i) for i in datactr.config.gpus.split(',')]
+          datactr.modelctr.models[datactr.curmodel].to(self.device)
+          self.gpus = datactr.config.gpus
+          if len(datactr.config.gpus) > 1:
+              datactr.modelctr.models[datactr.curmodel] = torch.nn.DataParallel(datactr.modelctr.models[datactr.curmodel],device_ids=datactr.config.gpus)
+      
+      
       self.end_epoch = datactr.config.epochs
       self.step_size = datactr.config.step_size
       self.gamma = datactr.config.gamma

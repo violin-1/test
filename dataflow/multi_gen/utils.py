@@ -110,10 +110,10 @@ def val_epoch(Trainer):
 
 def res_compare(Trainer):
     Trainer.is_best = False
-    if Trainer.best_res  is None or Trainer.args_val.sum < Trainer.best_res.sum:
-        Trainer.best_res = Trainer.args_val
+    if Trainer.best_res  is None or Trainer.args_val.avg < Trainer.best_res:
+        Trainer.best_res = Trainer.args_val.avg
         Trainer.is_best = True
-    Trainer.log.log_best(Trainer.epoch,Trainer.args_val.avg,Trainer.best_res.avg)
+    Trainer.log.log_best(Trainer.epoch,Trainer.args_val.avg,Trainer.best_res)
 
 def end_func(Trainer):
     Trainer.log.log5()
