@@ -130,40 +130,41 @@ class Trainer:
         self.res_func(self)    
       # is_best = val_acc > self.best_acc
       # self.best_acc = max(val_acc, self.best_acc)
-      if len(self.gpus) > 1:
-        save_checkpoint({
-        'epoch': epoch + 1,
-        'state_dict': self.model.module.state_dict(),
-        'best_res': self.best_res,
-        'optimizer': self.optimizer.state_dict(),
-        'scheduler': self.scheduler.state_dict(),
-        }, filename=os.path.join(self.savedir,'{}.pth'.format(epoch)) )
-      else:
-        save_checkpoint({
-            'epoch': epoch + 1,
-            'state_dict': self.model.state_dict(),
-            'best_res': self.best_res,
-            'optimizer': self.optimizer.state_dict(),
-            'scheduler': self.scheduler.state_dict(),
-        }, filename=os.path.join(self.savedir,'{}.pth'.format(epoch)) )
-      
-      if self.is_best :
+      if self.train_func is not None:
         if len(self.gpus) > 1:
           save_checkpoint({
+          'epoch': epoch + 1,
+          'state_dict': self.model.module.state_dict(),
+          'best_res': self.best_res,
+          'optimizer': self.optimizer.state_dict(),
+          'scheduler': self.scheduler.state_dict(),
+          }, filename=os.path.join(self.savedir,'{}.pth'.format(epoch)) )
+        else:
+          save_checkpoint({
               'epoch': epoch + 1,
-              'state_dict': self.model.module.state_dict(),
+              'state_dict': self.model.state_dict(),
               'best_res': self.best_res,
               'optimizer': self.optimizer.state_dict(),
               'scheduler': self.scheduler.state_dict(),
-          }, filename=os.path.join(self.savedir,'best.pth') )
-        else:
-          save_checkpoint({
-            'epoch': epoch + 1,
-            'state_dict': self.model.state_dict(),
-            'best_res': self.best_res,
-            'optimizer': self.optimizer.state_dict(),
-            'scheduler': self.scheduler.state_dict(),
-          }, filename=os.path.join(self.savedir,'best.pth') )
+          }, filename=os.path.join(self.savedir,'{}.pth'.format(epoch)) )
+        
+        if self.is_best :
+          if len(self.gpus) > 1:
+            save_checkpoint({
+                'epoch': epoch + 1,
+                'state_dict': self.model.module.state_dict(),
+                'best_res': self.best_res,
+                'optimizer': self.optimizer.state_dict(),
+                'scheduler': self.scheduler.state_dict(),
+            }, filename=os.path.join(self.savedir,'best.pth') )
+          else:
+            save_checkpoint({
+              'epoch': epoch + 1,
+              'state_dict': self.model.state_dict(),
+              'best_res': self.best_res,
+              'optimizer': self.optimizer.state_dict(),
+              'scheduler': self.scheduler.state_dict(),
+            }, filename=os.path.join(self.savedir,'best.pth') )
         
         # print('epoch: {} The best is {} last best is {}'.format(epoch,val_acc,self.best_acc))
     if self.end_func is not None:

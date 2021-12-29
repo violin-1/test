@@ -29,7 +29,6 @@
             一个epoch中的结果处理及展示代码:res_func
             训练完成的结束代码:end_func
             若不设置train_func则相当于仅测试
-
         logger模块:
             训练模型类型：modeltype
             训练数据集类型：datasettype
@@ -42,7 +41,6 @@
             checkpoints 默认保存在 savedir
             日志保存路径:logdir
             log默认保存在logdir中
-
 有模型控制模块(model/ModelContorller)
     模型models[]来自各模型.main
     模型points(仅3d点云用)[]来自各模型.point
@@ -80,5 +78,3 @@
         是否对颜色进行归一化处理:normalizecolor默认为True
         渲染间隔:waittime默认为0
     
-    
-        
