@@ -101,7 +101,6 @@ def val_epoch(Trainer):
             # get the inputs
             s0,dolp = Variable(s0).float().to(Trainer.device),Variable(dolp).float().to(Trainer.device)
             Trainer.optimizer.zero_grad()
-            
             pred = Trainer.model(s0)
             
             loss = Trainer.criterion(pred,dolp)

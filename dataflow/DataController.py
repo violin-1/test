@@ -111,7 +111,7 @@ class DataController:
                 self.curdataset += len(self.datasets)
             self.set_npoints()
             self.datasets_vis_arg_func[self.curdataset](self)
-            
+  
         self.curpcl = 0
     
     def switch_pcl(self,direct):

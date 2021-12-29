@@ -99,7 +99,7 @@ class Multi_modal_polarization:
             self.label = dolpmat[:,1].astype(np.int)
         
             self.len = len(self.dolpdatapath)
-            # self.get_category()
+            self.get_category()
     
     def __len__(self):
         return self.len
@@ -112,6 +112,32 @@ class Multi_modal_polarization:
         # category = self.category[idx]
         
         # if self.out == 'multi':
+        #     dolp = cv2.resize(cv2.imread(dolppath),(self.image_size_w,self.image_size_h),0,0,cv2.INTER_LINEAR)
+        #     dolp = self.transform(dolp)
+        #     s0 = cv2.resize(cv2.imread(s0path),(self.image_size_w,self.image_size_h),0,0,cv2.INTER_LINEAR)
+        #     s0 = self.transform(s0)
+            
+        #     if self.dtype == 'train':
+        #         return s0,dolp,label
+        #     elif self.dtype == 'test':
+        #         return s0,dolp,label,category
+        # elif self.out == 'Polar':
+        #     dolp = cv2.resize(cv2.imread(dolppath),(self.image_size_w,self.image_size_h),0,0,cv2.INTER_LINEAR)
+        #     dolp = self.transform(dolp)
+        #     if self.dtype == 'train':
+        #         return dolp,label
+        #     elif self.dtype == 'test':
+        #         return dolp,label,category
+        # elif self.out == 'RGB':
+        #     s0 = cv2.resize(cv2.imread(s0path),(self.image_size_w,self.image_size_h),0,0,cv2.INTER_LINEAR)
+        #     s0 = self.transform(s0)
+        #     if self.dtype == 'train':
+        #         return s0,label
+        #     elif self.dtype == 'test':
+        #         return s0,label,category
+        # category = self.category[idx]
+        
+        # if self.out == 'multi':
         dolp = cv2.resize(cv2.imread(dolppath),(self.image_size_w,self.image_size_h),0,0,cv2.INTER_LINEAR)
         s0 = cv2.resize(cv2.imread(s0path),(self.image_size_w,self.image_size_h),0,0,cv2.INTER_LINEAR)
         if self.dtype != 'vis':
@@ -120,8 +146,6 @@ class Multi_modal_polarization:
             return s0,dolp,label
         else:
             return dolp
-
-
             
     def get_category(self):
         self.cat_name = {"面具":0,"A4纸":1,"定制假头":2,"显示屏":3,"相纸":4,"真人":5}

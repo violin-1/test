@@ -8,4 +8,5 @@ common:
     gamma: 0.5
     num_workers: 32
     checkpoints_num: 10
-    trainratio: '73'
+    trainratio: 'r73'
+
