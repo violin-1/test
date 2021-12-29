@@ -57,19 +57,19 @@ def findsamename(root):
     ind_ = np.where(dolpfiles[:,1]=='0')[0]
     ind = np.where(dolpfiles[:,1]=='1')[0]
     dolpreal = list(dolpfiles[ind])
-    # dolpfake = list(dolpfiles[ind_])
+    dolpfake = list(dolpfiles[ind_])
     s0real = list(s0files[ind])
-    # s0fake = list(s0files[ind_])
+    s0fake = list(s0files[ind_])
     
-    return dolpreal,s0real
+    return dolpreal,dolpfake,s0real,s0fake
 
 def searchalldata(root,flag=False):
-    dolpreal,s0real = [],[]
+    dolpreal,dolpfake,s0real,s0fake = [],[],[],[]
     if flag:
         items = []
         items.append(os.path.join('dataset1_live','HUT','Only_Face'))
         items.append(os.path.join('dataset2_all'))
-        # items.append(os.path.join('dataset3_attack','HUT','Only_Face'))
+        items.append(os.path.join('dataset3_attack','HUT','Only_Face'))
     else:
         items = os.listdir(root)
     for item in items:
@@ -81,57 +81,60 @@ def searchalldata(root,flag=False):
                     dolpreal.append((os.path.join(root,item),1))
                 elif 'S0' in root:
                     s0real.append((os.path.join(root,item),1))
-            # else:
-            #     if 'DOLP' in root:
-            #         dolpfake.append((os.path.join(root,item),0))
-            #     elif 'S0' in root:
-            #         s0fake.append((os.path.join(root,item),0))
+            else:
+                if 'DOLP' in root:
+                    dolpfake.append((os.path.join(root,item),0))
+                elif 'S0' in root:
+                    s0fake.append((os.path.join(root,item),0))
         else:
             if 'dataset3_attack' in item or 'HUT' in item:
-                tmp1,tmp2 = findsamename(os.path.join(root,item))
+                tmp1,tmp2,tmp3,tmp4 = findsamename(os.path.join(root,item))
                 dolpreal = dolpreal + tmp1
-                # dolpfake = dolpfake + tmp2
-                s0real = s0real + tmp2
-                # s0fake = s0fake + tmp4
+                dolpfake = dolpfake + tmp2
+                s0real = s0real + tmp3
+                s0fake = s0fake + tmp4
             else:
-                # tmp1,tmp2,tmp3,tmp4 = searchalldata(os.path.join(root,item))
-                tmp1,tmp2 = searchalldata(os.path.join(root,item))
+                tmp1,tmp2,tmp3,tmp4 = searchalldata(os.path.join(root,item))
+                # tmp1,tmp2 = searchalldata(os.path.join(root,item))
                 dolpreal = dolpreal + tmp1
-                # dolpfake = dolpfake + tmp2
-                s0real = s0real + tmp2
-                # s0fake = s0fake + tmp4
-    return dolpreal,s0real
+                dolpfake = dolpfake + tmp2
+                s0real = s0real + tmp3
+                s0fake = s0fake + tmp4
+    return dolpreal,dolpfake,s0real,s0fake 
 
-def shuffle_split_data(real,testratio=0.2):
-    random.shuffle(real)
-    # random.shuffle(fake)
-    len1 = len(real)
-    # len2 = len(fake)
+def shuffle_split_data(data,testratio=0.2):
+    random.shuffle(data)
+    len1 = len(data)
     tlen1 = int(len1*testratio)
-    # tlen2 = int(len2*testratio)
-    
-    realtest = real[:tlen1]
-    realtrain = real[tlen1:]
+    datatest = data[:tlen1]
+    datatrain = data[tlen1:]
+    return datatrain,datatest
 
-    return realtrain,realtest
-
-def gendatalist(root,testratio=0.2):
-    dolpreal,s0real = searchalldata(root,True)
+def gendatalist(root,testratio=0.2,mode='gen'):
+    dolpreal,dolpfake,s0real,s0fake = searchalldata(root,True)
     indreal = np.arange(0,len(dolpreal))
-    # indfake = np.arange(0,len(dolpfake))
+    dolpreal,dolpfake,s0real,s0fake = np.array(dolpreal),np.array(dolpfake),np.array(s0real),np.array(s0fake)
     indrealtrain,indrealtest = shuffle_split_data(indreal,testratio)
-    dolpreal,s0real = np.array(dolpreal),np.array(s0real)
-    dolptraindir,dolptestdir = dolpreal[indrealtrain],dolpreal[indrealtest]
-    s0traindir,s0testdir = s0real[indrealtrain],s0real[indrealtest]
+    
+    if mode == 'gen':
+        indfake = np.arange(0,len(dolpfake))
+        indfaketrain,indfaketest = shuffle_split_data(indfake,testratio)
+        dolptraindir,dolptestdir = np.vstack((dolpreal[indrealtrain],dolpfake[indfaketrain])),np.vstack((dolpreal[indrealtest],dolpfake[indfaketest]))
+        s0traindir,s0testdir = np.vstack((s0real[indrealtrain],s0fake[indfaketrain])),np.vstack((s0real[indrealtest],s0fake[indfaketest]))
+    else:
+        dolptraindir,dolptestdir = dolpreal[indrealtrain],dolpreal[indrealtest]
+        s0traindir,s0testdir = s0real[indrealtrain],s0real[indrealtest]
+    
     return dolptraindir,dolptestdir,s0traindir,s0testdir
 
-def save_train_test_to_txt(traindir,testdir,txtsavepath,filenameprefix,vis=None):
+
+def save_train_test_to_txt(traindir,testdir,txtsavepath,filenameprefix,vis='gen'):
     # traindir,testdir=gendatalist(datadir)
     # with open(os.path.join(txtsavepath,filenameprefix+'all.txt'),'w') as f:
     #     all_ = traindir + testdir
     #     for line in all_:
     #         f.write(line[0]+','+str(line[1])+'\n')
-    if vis is None:
+    if vis != 'vis':
         with open(os.path.join(txtsavepath,filenameprefix+'train.txt'),'w') as f:
             for line in traindir:
                 f.write(line[0]+','+str(line[1])+'\n')
@@ -171,10 +174,14 @@ def change(root):
 if __name__ == '__main__':
     datadir = os.path.join(os.path.abspath('.'),'datasets','multi_modal_Polarization')
     mode = 'gen'
-    if mode == 'gen':
-        dolptraindir,dolptestdir,s0traindir,s0testdir = gendatalist(datadir,0.3)
-        save_train_test_to_txt(dolptraindir,dolptestdir,datadir,'gen_DOLP_')
-        save_train_test_to_txt(s0traindir,s0testdir,datadir,'gen_S0_')     
+    if mode == 'gen' or mode == 'vis':
+        dolptraindir,dolptestdir,s0traindir,s0testdir = gendatalist(datadir,0.3,mode)
+        if mode == 'gen':
+            save_train_test_to_txt(dolptraindir,dolptestdir,datadir,'DOLP_',mode)
+            save_train_test_to_txt(s0traindir,s0testdir,datadir,'S0_',mode)
+        elif mode == 'vis':
+            save_train_test_to_txt(dolptraindir,dolptestdir,datadir,'gen_DOLP_',mode)
+            save_train_test_to_txt(s0traindir,s0testdir,datadir,'gen_S0_',mode)  
     elif mode == 'change':
         change(datadir)
     pass
