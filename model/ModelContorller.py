@@ -59,10 +59,10 @@ class ModelController:
                     # self.mode = mode
                     # if self.mode == 'gpu' or self.mode == 'cuda':
                     #     self.model = self.model.cuda()
-                        if os.path.exists('model/{0}/checkpoints/best.pth'.format(modeltype)):
-                            checkpoint = torch.load('model/{0}/checkpoints/best.pth'.format(modeltype))
+                        if os.path.exists('datasets/datasetp/{0}/checkpoints/best.pth'.format(modeltype)):
+                            checkpoint = torch.load('datasets/datasetp/{0}/checkpoints/best.pth'.format(modeltype))
                             self.checkpoints.append(checkpoint)
-                            self.models[i+1].load_state_dict(checkpoint['model_state_dict'])
+                            self.models[i+1].load_state_dict(checkpoint['state_dict'])
                         else:
                             self.checkpoints.append(None)
             # self.data_predel_func = data_predel_func

@@ -125,20 +125,28 @@ def gendatalist(root,testratio=0.2):
     s0traindir,s0testdir = s0real[indrealtrain],s0real[indrealtest]
     return dolptraindir,dolptestdir,s0traindir,s0testdir
 
-def save_train_test_to_txt(traindir,testdir,txtsavepath,filenameprefix):
+def save_train_test_to_txt(traindir,testdir,txtsavepath,filenameprefix,vis=None):
     # traindir,testdir=gendatalist(datadir)
     # with open(os.path.join(txtsavepath,filenameprefix+'all.txt'),'w') as f:
     #     all_ = traindir + testdir
     #     for line in all_:
     #         f.write(line[0]+','+str(line[1])+'\n')
-            
-    with open(os.path.join(txtsavepath,filenameprefix+'train.txt'),'w') as f:
-        for line in traindir:
-            f.write(line[0]+','+str(line[1])+'\n')
-    
-    with open(os.path.join(txtsavepath,filenameprefix+'test.txt'),'w') as f:
-        for line in testdir:
-            f.write(line[0]+','+str(line[1])+'\n')
+    if vis is None:
+        with open(os.path.join(txtsavepath,filenameprefix+'train.txt'),'w') as f:
+            for line in traindir:
+                f.write(line[0]+','+str(line[1])+'\n')
+        
+        with open(os.path.join(txtsavepath,filenameprefix+'test.txt'),'w') as f:
+            for line in testdir:
+                f.write(line[0]+','+str(line[1])+'\n')
+    else:
+        with open(os.path.join(txtsavepath,filenameprefix+'vis.txt'),'w') as f:
+            for line in traindir:
+                f.write(line[0]+','+str(line[1])+'\n')
+        
+        with open(os.path.join(txtsavepath,filenameprefix+'vis.txt'),'a+') as f:
+            for line in testdir:
+                f.write(line[0]+','+str(line[1])+'\n')
 
 def change(root):
     root = os.path.join(root,'dataset2_all')

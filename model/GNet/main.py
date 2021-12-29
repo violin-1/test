@@ -3,7 +3,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+import torchvision.transforms as transforms
+import cv2
 
 def define_G(input_dim=3, output_dim=3, ndf=32):
 
@@ -227,11 +228,11 @@ def get_loss():
 def get_npoints():
     return None
 def predeal(data):
-    for i in range(data.shape[1]):
-        data[:,i] /= data[:,i].max()
-    data = torch.Tensor(data[:,:3])
-    return data.float().permute(1,0).cuda().view(1,data.shape[1],data.shape[0])
+    T = transforms.ToTensor()
+    return T(data).unsqueeze(0)
 def resdeal(data):
     # data = nn.sigmoid(data)
-    ans = torch.argmax(data, dim=1).float()
-    return ans
+    T = transforms.ToPILImage()
+    # data = data.permute(0,2,3,1)[0].detach().cpu().numpy()[:,:,0]
+    # data = (255*(data-data.min())/(data.max()-data.min())).astype(np.uint8)[:,:,0]
+    return cv2.cvtColor(np.asarray(T(data.cpu()[0,:,:,:])),cv2.COLOR_RGB2BGR)

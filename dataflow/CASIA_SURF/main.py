@@ -51,7 +51,7 @@ def set_draw_datactr(datactr):
     datactr.exec_func = None
     return
 
-def set_vis_arg(datactr):
+def set_vis_args(datactr):
     datactr.vis.set(xyzrelist=[1,-1,1])
     
 def get_dataset(config):

@@ -59,15 +59,16 @@ class DataController:
         else:
             if config.datatsetstype is not None and config.ctrtype is not None:
                 self.datasets = []
-                self.set_vis_arg_func = []
+                self.datasets_vis_arg_func = []
                 self.curdataset = 0
                 self.curpcl = 0
                 for i,dataset in enumerate(config.datatsetstype):
                     self.datasets.append(importlib.import_module('dataflow.'+dataset+'.main').get_dataset(config))
+                    self.datasets_vis_arg_func.append(importlib.import_module('dataflow.'+dataset+'.main').set_vis_args)
                     
             if config.modeltypes is not None:
                 self.modelctr = modelctr.ModelController(modeltypes=config.modeltypes,arg_set_func=config.Set_modelctr_func)
-                self.curmodel = 1
+                self.curmodel = 0
                 self.device = config.device
             
             if config.Set_exec_func is not None:
@@ -109,8 +110,8 @@ class DataController:
             elif self.curdataset < 0:
                 self.curdataset += len(self.datasets)
             self.set_npoints()
-            self.set_vis_arg_func[self.curdataset](self)
-            
+            self.datasets_vis_arg_func[self.curdataset](self)
+  
         self.curpcl = 0
     
     def switch_pcl(self,direct):
@@ -149,7 +150,13 @@ class DataController:
                 self.vis.mapcolor(self.vis.xyz.shape[0])
             self.vis.change_pcl_range()
         else:
-            self.vis.show = self.datasets[self.curdataset].__getitem__(self.curpcl)
+            data = self.datasets[self.curdataset].__getitem__(self.curpcl)
+            if self.modelctr.models[self.curmodel] is not None:
+                data = self.modelctr.predeal[self.curmodel](data)
+                data = data.to(self.config.device)
+                data = self.modelctr.models[self.curmodel](data)
+                data =self.modelctr.resdeal[self.curmodel](data)
+            self.vis.show = data
         
     def exec(self):
         # getattr(self,self.config.ctrtype)()

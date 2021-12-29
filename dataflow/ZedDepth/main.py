@@ -52,7 +52,11 @@ def set_datactr(datactr):
         datactr.set_vis_arg_func.append(importlib.import_module('dataflow.'+dataset+'.main').set_vis_arg)
     datactr.set_vis_arg_func[datactr.curdataset](datactr)
     
+<<<<<<< HEAD
 def set_vis_arg(datactr):
+=======
+def set_vis_args(datactr):
+>>>>>>> 43115bec30f5c720ed5fa79ed01ae9e9d1170a78
     datactr.vis.set(_3d=False)
 def get_dataset(config):  
     return zedcamera()
