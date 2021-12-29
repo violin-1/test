@@ -76,9 +76,9 @@ def train_epoch(Trainer):
         s0,dolp = Variable(s0).float().to(Trainer.device),Variable(dolp).float().to(Trainer.device)
         Trainer.optimizer.zero_grad()
         
-        pred =  Trainer.model(s0)
+        pred =  Trainer.model(dolp)
 
-        loss = Trainer.criterion(pred,dolp)
+        loss = Trainer.criterion(pred,s0)
         
         loss.backward()
     
@@ -102,10 +102,10 @@ def val_epoch(Trainer):
             s0,dolp = Variable(s0).float().to(Trainer.device),Variable(dolp).float().to(Trainer.device)
             Trainer.optimizer.zero_grad()
             
-            pred = Trainer.model(s0)
+            pred = Trainer.model(dolp)
             
-            loss = Trainer.criterion(pred,dolp)
-            Trainer.args_val.update(loss.item(),dolp.shape[0])
+            loss = Trainer.criterion(pred,s0)
+            Trainer.args_val.update(loss.item(),s0.shape[0])
     Trainer.log.log4(Trainer.epoch,Trainer.args_val.avg)
 
 def res_compare(Trainer):
