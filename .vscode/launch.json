@@ -1,0 +1,192 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Vis multi_gen|Gnet",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_gen,multi_gen",
+                "--set_datactr_func","dataflow.multi_gen.main,set_vis_args",
+                "--ctrtype","vis",
+                "--modeltypes","GNet",
+                "--device","gpu",
+                "--cfg","cfgs/Gnet_multi_gen_test.yaml",
+            ],
+        },{
+            "name": "Train multi_gen|Gnet",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_gen,multi_gen",
+                "--set_datactr_func","dataflow.multi_gen.main,set_multi_datactr",
+                "--modeltypes","GNet",
+                "--device","gpu",
+                "--gpus","0,1,2,3",
+                "--cfg","cfgs/Gnet_multi_gen_train.yaml",
+            ],
+        },{
+            "name": "Train CASIA_SURF|CDCN_ori",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","CASIA_SURF",
+                "--set_datactr_func","dataflow.CASIA_SURF.main,set_datactr",
+                "--modeltypes","CDCN",
+                "--device","gpu",
+                "--gpus","0,1,2,3",
+                "--cfg","cfgs/CDCN_Ori_CASIA_SURF.yaml",
+            ],
+        },{
+            "name": "Test Polarization|CDCN_single",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_modal_Polarization",
+                "--set_datactr_func","dataflow.multi_modal_Polarization.main,set_Polar_datactr",
+                "--ctrtype","test",
+                "--modeltypes","CDCN_single",
+                "--device","gpu",
+                "--gpus","2",
+                "--cfg","cfgs/CDCN_single_HUTFAS_test.yaml",
+            ],
+        },{
+            "name": "Test RGB|CDCN_single",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_modal_Polarization",
+                "--set_datactr_func","dataflow.multi_modal_Polarization.main,set_RGB_datactr",
+                "--ctrtype","test",
+                "--modeltypes","CDCN_single",
+                "--device","gpu",
+                "--gpus","5",
+                "--cfg","cfgs/CDCN_single_HUTFAS_test.yaml",
+            ],
+        },{
+            "name": "Test multi_modal_Polarization|CDCN",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_modal_Polarization",
+                "--set_datactr_func","dataflow.multi_modal_Polarization.main,set_multi_datactr",
+                "--ctrtype","test",
+                "--modeltypes","CDCN",
+                "--device","gpu",
+                "--gpus","3",
+                "--cfg","cfgs/CDCN_HUTFAS_test.yaml",
+            ],
+        },{
+            "name": "Train Polarization|CDCN_single",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_modal_Polarization",
+                "--set_datactr_func","dataflow.multi_modal_Polarization.main,set_Polar_datactr",
+                "--modeltypes","CDCN_single",
+                "--device","gpu",
+                "--gpus","2,3",
+                "--cfg","cfgs/CDCN_single_HUTFAS.yaml",
+            ],
+        },{
+            "name": "Train RGB|CDCN_single",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_modal_Polarization",
+                "--set_datactr_func","dataflow.multi_modal_Polarization.main,set_RGB_datactr",
+                "--modeltypes","CDCN_single",
+                "--device","gpu",
+                "--gpus","0,1",
+                "--cfg","cfgs/CDCN_single_HUTFAS.yaml",
+            ],
+        },{
+            "name": "Draw multi_modal_Polarization|CDCN",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_modal_Polarization",
+                "--set_datactr_func","dataflow.multi_modal_Polarization.main,set_draw_datactr",
+                "--modeltypes","CDCN",
+                "--ctrtype","drawGraph",
+                "--cfg","cfgs/CDCN_HUTFAS.yaml",
+            ],
+        },{
+            "name": "Train multi_modal_Polarization|CDCN",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","multi_modal_Polarization",
+                "--set_datactr_func","dataflow.multi_modal_Polarization.main,set_multi_datactr",
+                "--modeltypes","CDCN",
+                "--device","gpu",
+                "--gpus","0,1,2,3",
+                "--cfg","cfgs/CDCN_HUTFAS.yaml",
+            ],
+        },{
+            "name": "ZedDepth|None",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","ZedDepth",
+                "--ctrtype","Vis",
+                "--set_datactr_func","dataflow.ZedDepth.main,set_datactr",
+                "--device","gpu"
+            ],
+        },{
+            "name": "Zed XYZ|part hut",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--datatsetstype","ZedCamera,XYZ",
+                "--ctrtype","Vis",
+                "--set_datactr_func","dataflow.ZedCamera.main,set_datactr",
+                "--modeltypes","pointnet2_part_seg_msg,pointnet2_hut_seg_msg",
+                "--device","gpu"
+            ],
+        },{
+            "name": "Build PCL module",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/setup.py",
+            "console": "integratedTerminal",
+            "args": [
+                "build_ext",
+                "--inplace"
+            ]
+        },{
+            "name": "Python: 当前文件",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+    ]
+}

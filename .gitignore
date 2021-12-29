@@ -1,0 +1,9 @@
+/.qt_for_python
+/pclpyd.cpython-38-x86_64-linux-gnu.so
+/show3d.png
+*.pyc
+*.o
+*.obj
+*.exp
+*.lib
+/datasets
