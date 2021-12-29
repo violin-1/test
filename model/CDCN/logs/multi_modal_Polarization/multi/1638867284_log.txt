@@ -1,2 +1,0 @@
-This task is training on the multi_modal_Polarization dataset
-We now use CDCN model to do this task
