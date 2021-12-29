@@ -48,6 +48,7 @@ class CVis:
         self.mousey = 0.5
         self.zoom = 1.0
         self.changed = True
+        x=1
 
         cv2.namedWindow('show3d')
         cv2.moveWindow('show3d', 0, 0)
